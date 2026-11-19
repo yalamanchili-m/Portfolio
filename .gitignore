@@ -1,0 +1,92 @@
+# ─── Dependencies ────────────────────────────────────────────────────────────
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+/.pnpm-store
+
+# ─── Next.js build output ────────────────────────────────────────────────────
+/.next/
+/out/
+next-env.d.ts
+/.next-*
+
+# ─── Production build ────────────────────────────────────────────────────────
+/build
+/dist
+
+# ─── TypeScript & bundler caches ─────────────────────────────────────────────
+*.tsbuildinfo
+.turbo/
+.swc/
+.eslintcache
+.ncache
+
+# ─── Testing & coverage ──────────────────────────────────────────────────────
+/coverage
+/.nyc_output
+
+# ─── Logs ────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ─── Environment variables — never commit real secrets ───────────────────────
+# Templates (.env.example / .env.sample / .env.template) stay tracked.
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# ─── Deployment ──────────────────────────────────────────────────────────────
+.vercel
+.netlify
+
+# ─── Certificates & keys ─────────────────────────────────────────────────────
+*.pem
+*.key
+*.p12
+*.pfx
+
+# ─── Local agent / tool state ────────────────────────────────────────────────
+# Freebuff project id and other per-machine agent scratch files.
+.freebuff/
+
+# Per-machine npm config (registry tokens, auth, local overrides).
+.npmrc
+
+# Locally installed agent skills (regenerate with `npx skills add`).
+.agents/skills/graphify/
+
+# ─── graphify knowledge graph ────────────────────────────────────────────────
+# Shared graph artifacts stay committable (graph.json, manifest.json,
+# GRAPH_REPORT.md, graph.html). Ignore caches, run state and dated backups.
+graphify-out/cache/
+graphify-out/.graphify_*
+graphify-out/.cloud-cta-shown
+graphify-out/.vocab.txt
+graphify-out/needs_update
+graphify-out/cypher.txt
+graphify-out/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/
+
+# ─── OS / editor cruft ───────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
