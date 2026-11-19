@@ -1,0 +1,591 @@
+@import "tailwindcss";
+
+@theme {
+  /* Cloud & Steel Blue — monochromatic core */
+  --color-powder-blue: #7dadd6;
+  --color-soft-blue: #729cd0;
+  --color-muted-blue: #718fbc;
+  --color-steel-blue: #5478b2;
+  --color-slate-blue: #566787;
+
+  /* High-contrast neutrals anchoring the blues */
+  --color-canvas: #f4f8fb;
+  --color-surface: #ffffff;
+  --color-tint: #eaf1f8;
+  --color-primary: #152236;
+  --color-secondary: #475872;
+  --color-showcase: #1d2d44;
+  --color-online: #3e9b6d;
+  /* Text that sits on a solid accent fill (flips in dark). */
+  --color-on-accent: #ffffff;
+
+  /* Type */
+  --font-serif: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Realistic lighting & depth — blue-tinted */
+  --shadow-tactile:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 18px 36px -18px rgba(21, 34, 54, 0.14);
+  --shadow-lifted:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 28px 56px -24px rgba(21, 34, 54, 0.22);
+  --shadow-float:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 12px 24px -12px rgba(21, 34, 54, 0.12);
+  --shadow-pressed:
+    inset 0 2px 6px rgba(21, 34, 54, 0.16), 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+:root {
+  --border-line: rgba(86, 103, 135, 0.18);
+
+  /* Semantic aliases — read by the Tetris canvas (via getComputedStyle)
+     and available to any component that prefers token names. */
+  --bg-surface: var(--color-surface);
+  --bg-surface-subtle: var(--color-tint);
+  --border-subtle: rgba(86, 103, 135, 0.18);
+  --text-primary: var(--color-primary);
+  --text-secondary: var(--color-secondary);
+  --text-muted: var(--color-slate-blue);
+  --accent-primary: var(--color-steel-blue);
+
+  /* Tetris engine surfaces. */
+  --tetris-frame: #ffffff;
+  --tetris-board: #e9f0f7;
+  --tetris-grid: rgba(86, 103, 135, 0.16);
+  --tetris-ghost: rgba(74, 107, 130, 0.55);
+  --tetris-overlay: rgba(244, 248, 251, 0.88);
+  --tetris-overlay-text: #152236;
+  --tetris-flash: rgba(255, 255, 255, 0.92);
+  /* Cabinet bezel around the playfield well. */
+  --border-strong: #8ea6bd;
+
+  /* Tetromino fills — deep slate-steel on a light board. */
+  --piece-i: #5478b2;
+  --piece-j: #2f4557;
+  --piece-l: #6c8ea4;
+  --piece-o: #6f889f;
+  --piece-s: #2e7d6b;
+  --piece-t: #4a6b82;
+  --piece-z: #385366;
+}
+
+/* ------------------------------------------------------------------ */
+/* Dark theme                                                          */
+/* Every Tailwind colour token is a CSS variable, so overriding the    */
+/* variables here flips the whole site without touching components.    */
+/* ------------------------------------------------------------------ */
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Backgrounds */
+  --color-canvas: #111b26;
+  --color-surface: #1a2734;
+  --color-tint: #223241;
+
+  /* Typography */
+  --color-primary: #f1f5f9;
+  --color-secondary: #b7c5d1;
+  --color-slate-blue: #8497a8;
+  --color-on-accent: #0e1721;
+
+  /* Brand & accent (slate steel blue) */
+  --color-steel-blue: #8eadc2;
+  --color-soft-blue: #a8c1d2;
+  --color-muted-blue: #6c8ea4;
+  --color-powder-blue: #8eadc2;
+
+  /* Deep bands & semantics */
+  --color-showcase: #0c141c;
+  --color-online: #68b9a2;
+
+  /* Semantic aliases */
+  --bg-surface: var(--color-surface);
+  --bg-surface-subtle: var(--color-tint);
+  --border-subtle: rgba(66, 88, 106, 0.55);
+  --text-primary: var(--color-primary);
+  --text-secondary: var(--color-secondary);
+  --text-muted: var(--color-slate-blue);
+  --accent-primary: var(--color-steel-blue);
+
+  /* Tetris engine surfaces. */
+  --tetris-frame: #0f172a;
+  --tetris-board: #111822;
+  --tetris-grid: rgba(30, 41, 59, 0.9);
+  --tetris-ghost: rgba(220, 230, 238, 0.42);
+  --tetris-overlay: rgba(15, 23, 42, 0.72);
+  --tetris-overlay-text: #dce6ee;
+  --tetris-flash: rgba(226, 240, 250, 0.88);
+  --border-strong: #42586a;
+
+  /* Tetromino fills — pale slate-steel on the dark board. */
+  --piece-i: #b8c7d6;
+  --piece-j: #385366;
+  --piece-l: #8fa8b8;
+  --piece-o: #dce6ee;
+  --piece-s: #2e7d6b;
+  --piece-t: #6c8ea4;
+  --piece-z: #4a6b82;
+
+  /* Borders & dividers */
+  --border-line: rgba(66, 88, 106, 0.55);
+
+  /* Elevation */
+  --shadow-tactile:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 36px -18px rgba(0, 0, 0, 0.55);
+  --shadow-lifted:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 28px 56px -24px rgba(0, 0, 0, 0.65);
+  --shadow-float:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 12px 24px -12px rgba(0, 0, 0, 0.5);
+  --shadow-pressed: inset 0 2px 6px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+html[data-theme="dark"] body {
+  background-image:
+    radial-gradient(ellipse 70% 45% at 10% -10%, rgba(142, 173, 194, 0.12), transparent 62%),
+    radial-gradient(ellipse 55% 40% at 94% 2%, rgba(108, 142, 164, 0.1), transparent 60%);
+}
+
+html[data-theme="dark"] ::selection {
+  background: #8eadc2;
+  color: #111b26;
+}
+
+html[data-theme="dark"] .surface-card {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 36px -18px rgba(0, 0, 0, 0.55);
+}
+
+html[data-theme="dark"] .specular {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 24px 48px -18px rgba(0, 0, 0, 0.6);
+}
+
+html[data-theme="dark"] .btn-solid {
+  color: var(--color-on-accent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 12px 24px -12px rgba(0, 0, 0, 0.6);
+}
+
+html[data-theme="dark"] .btn-outline {
+  border-color: rgba(142, 173, 194, 0.32);
+  color: #c6d5e0;
+}
+
+html[data-theme="dark"] .btn-outline:hover {
+  background: rgba(142, 173, 194, 0.1);
+  border-color: rgba(142, 173, 194, 0.55);
+}
+
+html[data-theme="dark"] .custom-cursor {
+  border-color: rgba(142, 173, 194, 0.5);
+  background-color: rgba(142, 173, 194, 0.12);
+  box-shadow: 0 8px 20px -12px rgba(0, 0, 0, 0.7);
+}
+
+html[data-theme="dark"] .custom-cursor.is-hovered {
+  border-color: #a8c1d2;
+  background-color: rgba(168, 193, 210, 0.16);
+}
+
+html[data-theme="dark"] .custom-cursor.is-hovered .custom-cursor-dot {
+  background-color: #f1f5f9;
+}
+
+/* Theme toggle icon swap (no client state needed). */
+.theme-icon-dark {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-icon-light {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-icon-dark {
+  display: block;
+}
+
+body {
+  background-color: var(--color-canvas);
+  background-image:
+    radial-gradient(ellipse 70% 45% at 10% -10%, rgba(125, 173, 214, 0.16), transparent 62%),
+    radial-gradient(ellipse 55% 40% at 94% 2%, rgba(114, 156, 208, 0.1), transparent 60%);
+  background-attachment: fixed;
+  color: var(--color-primary);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01" on, "cv11" on;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Anchor sections clear the sticky navigation (72px nav + breathing room). */
+section[id],
+div[id="top"] {
+  scroll-margin-top: 96px;
+}
+
+::selection {
+  background: var(--color-steel-blue);
+  color: #ffffff;
+}
+
+/* Custom cursor ------------------------------------------------------- */
+/* The native pointer is only hidden while the custom cursor is mounted
+   (`.custom-cursor-active` on <html>), so a script failure degrades to a
+   normal cursor. Text fields keep their I-beam. */
+@media (hover: hover) and (pointer: fine) {
+  html.custom-cursor-active,
+  html.custom-cursor-active body,
+  html.custom-cursor-active body * {
+    cursor: none;
+  }
+
+  html.custom-cursor-active :is(input, textarea, select, [contenteditable="true"]) {
+    cursor: auto;
+  }
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  border: 1px solid rgba(84, 120, 178, 0.5);
+  background-color: rgba(125, 173, 214, 0.16);
+  box-shadow: 0 8px 20px -12px rgba(21, 34, 54, 0.4);
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+  transition:
+    width 200ms ease,
+    height 200ms ease,
+    background-color 200ms ease,
+    border-color 200ms ease,
+    opacity 200ms ease;
+}
+
+.custom-cursor.is-visible {
+  opacity: 1;
+}
+
+.custom-cursor-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--color-steel-blue);
+  transition:
+    width 200ms ease,
+    height 200ms ease,
+    background-color 200ms ease;
+}
+
+.custom-cursor.is-hovered {
+  width: 60px;
+  height: 60px;
+  border-color: var(--color-soft-blue);
+  background-color: rgba(114, 156, 208, 0.22);
+}
+
+.custom-cursor.is-hovered .custom-cursor-dot {
+  width: 4px;
+  height: 4px;
+  background-color: var(--color-showcase);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor,
+  .custom-cursor-dot {
+    transition: opacity 200ms ease;
+  }
+}
+
+/* Fine hairline utility */
+.hairline {
+  border-color: var(--border-line);
+}
+
+/* Elevated light surfaces: a crisp white plate with a specular top edge. */
+.surface-card {
+  border: 1px solid var(--border-line);
+  background: var(--color-surface);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 18px 36px -18px rgba(21, 34, 54, 0.12);
+}
+
+/* Elevated dark surfaces: glossy top-edge specular highlight over an
+   ambient drop shadow (ID badge, showcase bands). */
+.specular {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 24px 48px -18px rgba(21, 34, 54, 0.32);
+}
+
+/* Soft inset well (die-cut slots, sunken panels). */
+.sunken {
+  box-shadow:
+    inset 0 2px 5px rgba(21, 34, 54, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Photographic micro-grain — a light film texture, never pixel art. */
+.texture-grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.texture-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.1;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.65'/%3E%3C/svg%3E");
+}
+
+/* Editorial buttons ---------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-tactile);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-steel-blue);
+  outline-offset: 3px;
+}
+
+.btn-solid {
+  background: var(--color-steel-blue);
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 12px 24px -12px rgba(84, 120, 178, 0.55);
+}
+
+.btn-solid:hover {
+  background: var(--color-soft-blue);
+}
+
+.btn-outline {
+  border: 1px solid rgba(86, 103, 135, 0.45);
+  color: var(--color-slate-blue);
+  background: transparent;
+}
+
+.btn-outline:hover {
+  background: rgba(86, 103, 135, 0.07);
+  border-color: rgba(86, 103, 135, 0.7);
+}
+
+.btn-quiet {
+  border: 1px solid var(--border-line);
+  background: var(--color-tint);
+  color: var(--color-slate-blue);
+}
+
+.btn-quiet:hover {
+  border-color: rgba(84, 120, 178, 0.4);
+  background: rgba(125, 173, 214, 0.18);
+  color: var(--color-steel-blue);
+}
+
+/* Ambient keyframes ---------------------------------------------------- */
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.86);
+  }
+}
+
+.soft-pulse {
+  animation: soft-pulse 1.8s ease-in-out infinite;
+}
+
+/* Arcade feedback: board shake on a line clear, rising score popups, and
+   the glowing "beat the AI" callout. */
+@keyframes board-shake {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2px, 1px);
+  }
+  40% {
+    transform: translate(2px, -1px);
+  }
+  60% {
+    transform: translate(-1px, 0);
+  }
+  80% {
+    transform: translate(1px, 0);
+  }
+}
+
+.board-shake {
+  animation: board-shake 220ms ease-in-out;
+}
+
+/* Hard drop: the well drops 2px and settles, like the cabinet taking the hit. */
+@keyframes board-drop {
+  0% {
+    transform: translateY(0);
+  }
+  45% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.board-drop {
+  animation: board-drop 160ms ease-out;
+}
+
+@keyframes score-float {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 8px) scale(0.9);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -34px) scale(1.04);
+  }
+}
+
+.score-float {
+  animation: score-float 950ms ease-out forwards;
+}
+
+@keyframes callout-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(84, 120, 178, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+  50% {
+    box-shadow:
+      0 0 0 6px rgba(84, 120, 178, 0),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+}
+
+.callout-glow {
+  animation: callout-glow 2s ease-out infinite;
+}
+
+/* Terminal caret + line reveal for the hero stack card. */
+@keyframes caret-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.caret {
+  animation: caret-blink 1.05s step-end infinite;
+}
+
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.row-in {
+  animation: row-in 240ms ease-out both;
+}
+
+/* Utility: balanced, readable editorial measure. */
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .soft-pulse,
+  .caret,
+  .row-in,
+  .board-shake,
+  .board-drop,
+  .score-float,
+  .callout-glow {
+    animation: none;
+  }
+  .btn {
+    transition: none;
+  }
+  .btn:hover {
+    transform: none;
+  }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
