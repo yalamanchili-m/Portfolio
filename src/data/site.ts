@@ -27,9 +27,9 @@ export type NavItem = {
 };
 
 /**
- * Three primary destinations only. "About" gathers the supporting
- * sections (education, certifications, beyond tech) behind one
- * scroll target so the navbar never competes with the work itself.
+ * Three primary destinations only: the work, the experience, and the
+ * life beyond it. Education and certifications stay reachable from the
+ * command palette so the navbar never competes with the work itself.
  */
 export const NAV_ITEMS: NavItem[] = [
   {
@@ -47,11 +47,11 @@ export const NAV_ITEMS: NavItem[] = [
     sections: ["experience"],
   },
   {
-    id: "about",
-    label: "About",
+    id: "beyond",
+    label: "Beyond Work",
     index: "03",
-    href: "#education",
-    sections: ["education", "certifications", "beyond"],
+    href: "#beyond",
+    sections: ["beyond"],
   },
 ];
 
@@ -67,11 +67,10 @@ export const SKILL_INDEX: { label: string; href: string; hint: string }[] = [
   { label: "Cloud & Docker", href: "#experience", hint: "AWS · Docker Compose" },
 ];
 
-/** Persistent resume shortcut. Replace the href once a real PDF is
- * supplied (drop it into `public/resume/`). */
+/** Persistent resume shortcut pointing at the PDF in `public/resume/`. */
 export const RESUME_SHORTCUT = {
   label: "Resume",
-  windowTitle: "RESUME.PDF",
-  href: null as string | null,
-  placeholder: true as boolean,
+  windowTitle: "MANVITHA-YALAMANCHILI-RESUME.PDF",
+  href: "/resume/manvitha-yalamanchili-resume.pdf" as string | null,
+  placeholder: false as boolean,
 };

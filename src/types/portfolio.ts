@@ -55,6 +55,8 @@ export type BeyondCardDetails = {
   sections: BeyondCardSection[];
   /** External press/coverage links rendered as buttons in the modal. */
   media?: BeyondCardLink[];
+  /** Heading above `media`; defaults to "Media & press". */
+  mediaLabel?: string;
 };
 
 export type BeyondTechCard = {
@@ -65,8 +67,6 @@ export type BeyondTechCard = {
   tags: string[];
   /** Accent pill shown at the top of the card instead of "View details". */
   badge?: string;
-  /** Replaces the tag row with an interactive cue for modal cards. */
-  footerCue?: string;
   /** Present when the card opens a detail modal. */
   details?: BeyondCardDetails;
 };

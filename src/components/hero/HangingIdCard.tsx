@@ -403,7 +403,7 @@ export function HangingIdCard({ photoSrc = "/manvitha.png" }: { photoSrc?: strin
         </motion.div>
       </motion.div>
 
-      <p className="absolute bottom-1 w-full text-center text-[10px] font-medium tracking-[0.18em] text-[#475872]/80 uppercase">
+      <p className="absolute bottom-1 w-full text-center text-[11px] font-medium tracking-[0.18em] text-[#475872]/80 uppercase">
         Click, drag or hover the badge
       </p>
     </div>

@@ -24,6 +24,27 @@
   --font-sans: var(--font-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
 
+  /* Type scale — each step nudged up ~1px from the Tailwind defaults so
+     rem-based utilities sit alongside the arbitrary px sizes. */
+  --text-xs: 0.8125rem; /* 13px */
+  --text-xs--line-height: 1.125rem;
+  --text-sm: 0.9375rem; /* 15px */
+  --text-sm--line-height: 1.3125rem;
+  --text-base: 1.0625rem; /* 17px */
+  --text-base--line-height: 1.625rem;
+  --text-lg: 1.1875rem; /* 19px */
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.3125rem; /* 21px */
+  --text-xl--line-height: 1.875rem;
+  --text-2xl: 1.5625rem; /* 25px */
+  --text-2xl--line-height: 2rem;
+  --text-3xl: 1.9375rem; /* 31px */
+  --text-3xl--line-height: 2.25rem;
+  --text-4xl: 2.3125rem; /* 37px */
+  --text-4xl--line-height: 2.75rem;
+  --text-5xl: 3.0625rem; /* 49px */
+  --text-5xl--line-height: 1.05;
+
   /* Realistic lighting & depth — blue-tinted */
   --shadow-tactile:
     inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 18px 36px -18px rgba(21, 34, 54, 0.14);
@@ -33,6 +54,12 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 12px 24px -12px rgba(21, 34, 54, 0.12);
   --shadow-pressed:
     inset 0 2px 6px rgba(21, 34, 54, 0.16), 0 1px 0 rgba(255, 255, 255, 0.5);
+  /* Small chips (skill tags) sitting just above the card surface. */
+  --shadow-chip: 0 1px 2px rgba(21, 34, 54, 0.1), 0 4px 10px -4px rgba(21, 34, 54, 0.25);
+  /* Arcade keys: a hard bottom edge plus a soft ambient drop. */
+  --shadow-key:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 3px 0 rgba(86, 103, 135, 0.2),
+    0 10px 18px -10px rgba(21, 34, 54, 0.4);
 }
 
 :root {
@@ -82,10 +109,10 @@ html[data-theme="dark"] {
   --color-surface: #1a2734;
   --color-tint: #223241;
 
-  /* Typography */
-  --color-primary: #f1f5f9;
-  --color-secondary: #b7c5d1;
-  --color-slate-blue: #8497a8;
+  /* Typography — lifted a little above the dark surfaces for readability */
+  --color-primary: #f7fafc;
+  --color-secondary: #c6d4e0;
+  --color-slate-blue: #97aab9;
   --color-on-accent: #0e1721;
 
   /* Brand & accent (slate steel blue) */
@@ -137,6 +164,10 @@ html[data-theme="dark"] {
   --shadow-float:
     inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 12px 24px -12px rgba(0, 0, 0, 0.5);
   --shadow-pressed: inset 0 2px 6px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(255, 255, 255, 0.04);
+  --shadow-chip: 0 1px 2px rgba(0, 0, 0, 0.5), 0 5px 12px -4px rgba(0, 0, 0, 0.6);
+  --shadow-key:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 3px 0 rgba(0, 0, 0, 0.45),
+    0 10px 18px -10px rgba(0, 0, 0, 0.7);
 }
 
 html {
@@ -153,12 +184,6 @@ html[data-theme="dark"] body {
 html[data-theme="dark"] ::selection {
   background: #8eadc2;
   color: #111b26;
-}
-
-html[data-theme="dark"] .surface-card {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 18px 36px -18px rgba(0, 0, 0, 0.55);
 }
 
 html[data-theme="dark"] .specular {

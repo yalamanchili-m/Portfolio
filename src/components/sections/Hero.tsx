@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion, type Variants } from "framer-motion";
 import { HangingIdCard } from "@/components/hero/HangingIdCard";
 import { ArrowDown, ArrowUpRight } from "@/components/ui/icons";
 import Link from "next/link";
@@ -12,7 +13,23 @@ import { HERO } from "@/data/site";
  * lives in the navbar), the bio carries inline accent highlights, and the
  * primary CTA goes straight to the work. The stack card anchors the
  * bottom of the left column where the old metadata line sat.
+ *
+ * The copy rises into place with a short stagger the moment the section
+ * enters view — on first paint, since the hero sits at the top of the page.
  */
+const riseVariants: Variants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const riseContainer: Variants = {
+  visible: { transition: { staggerChildren: 0.09 } },
+};
+
 export function Hero() {
   return (
     <section
@@ -22,8 +39,17 @@ export function Hero() {
     >
       {/* Left column — status, headline, bio, CTAs, stack card */}
       <div className="order-1 pt-14 pb-4 lg:col-span-7 lg:py-14">
-        <div className="max-w-2xl">
-          <p className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-full border border-soft-blue/40 bg-powder-blue/20 px-3.5 py-1.5 text-[10px] font-semibold tracking-[0.14em] text-steel-blue uppercase">
+        <motion.div
+          className="max-w-2xl"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={riseContainer}
+        >
+          <motion.p
+            variants={riseVariants}
+            className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-full border border-soft-blue/40 bg-powder-blue/20 px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.14em] text-steel-blue uppercase"
+          >
             <span className="relative flex size-2 items-center justify-center">
               <span
                 aria-hidden="true"
@@ -39,9 +65,12 @@ export function Hero() {
               ·
             </span>
             <span className="text-slate-blue">{HERO.location}</span>
-          </p>
+          </motion.p>
 
-          <h1 className="mt-7 font-serif text-[42px] leading-[1.02] tracking-[-0.035em] text-primary text-balance sm:text-[58px] lg:text-[68px]">
+          <motion.h1
+            variants={riseVariants}
+            className="mt-7 font-serif text-[43px] leading-[1.02] tracking-[-0.035em] text-primary text-balance sm:text-[59px] lg:text-[69px]"
+          >
             {HERO.headline.map((line, index) => {
               const isLast = index === HERO.headline.length - 1;
               if (!isLast) {
@@ -64,28 +93,34 @@ export function Hero() {
                 </span>
               );
             })}
-          </h1>
+          </motion.h1>
 
-          <p className="mt-6 max-w-[34rem] text-pretty text-[15px] leading-[1.75] text-secondary sm:text-[16px]">
+          <motion.p
+            variants={riseVariants}
+            className="mt-6 max-w-[34rem] text-pretty text-[16px] leading-[1.75] text-secondary sm:text-[17px]"
+          >
             {renderEmphasis(HERO.summary)}
-          </p>
+          </motion.p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <a href="#projects" className="btn btn-solid px-5 py-3 text-[13px]">
+          <motion.div
+            variants={riseVariants}
+            className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3"
+          >
+            <a href="#projects" className="btn btn-solid px-5 py-3 text-[14px]">
               See the work
               <ArrowDown className="size-3.5 text-on-accent/70" />
             </a>
             <Link
               href="/resume"
-              className="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-steel-blue underline-offset-4 transition-colors hover:text-slate-blue hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-steel-blue"
+              className="group inline-flex items-center gap-1.5 text-[14px] font-semibold text-steel-blue underline-offset-4 transition-colors hover:text-slate-blue hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-steel-blue"
             >
               Résumé
               <ArrowUpRight className="size-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </Link>
-          </div>
+          </motion.div>
 
           <StackCard />
-        </div>
+        </motion.div>
       </div>
 
       {/* Right column — custom ID badge hanging from the column's top edge */}
@@ -166,13 +201,13 @@ function StackCard() {
           <span className="size-2 rounded-full bg-muted-blue" />
           <span className="size-2 rounded-full bg-powder-blue/50" />
         </div>
-        <span className="font-mono text-[9px] font-medium tracking-[0.18em] text-slate-blue uppercase">
+        <span className="font-mono text-[10px] font-medium tracking-[0.18em] text-slate-blue uppercase">
           System profile
         </span>
       </div>
 
       <div className="min-h-[9.75rem] px-4 py-3.5">
-        <p className="font-mono text-[11px] text-secondary">
+        <p className="font-mono text-[12px] text-secondary">
           <span className="mr-1.5 text-steel-blue">$</span>
           {STACK_COMMAND.slice(0, typedChars)}
           <span
@@ -185,7 +220,7 @@ function StackCard() {
           {STACK_ROWS.slice(0, visibleRows).map((row) => (
             <div
               key={row}
-              className="row-in flex items-baseline gap-2 font-mono text-[11px]"
+              className="row-in flex items-baseline gap-2 font-mono text-[12px]"
             >
               <dt className="shrink-0 text-secondary">{row}</dt>
               <span
@@ -198,7 +233,7 @@ function StackCard() {
         </dl>
 
         {showReady ? (
-          <p className="row-in mt-3 border-t border-slate-blue/12 pt-2.5 font-mono text-[11px] text-steel-blue">
+          <p className="row-in mt-3 border-t border-slate-blue/12 pt-2.5 font-mono text-[12px] text-steel-blue">
             <span aria-hidden="true" className="mr-1.5">
               →
             </span>

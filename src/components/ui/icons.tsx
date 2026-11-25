@@ -73,3 +73,20 @@ export function Heart({ className = "size-3.5", ...props }: IconProps) {
     </svg>
   );
 }
+
+export function Copy({ className = "size-3.5", ...props }: IconProps) {
+  return (
+    <svg {...base} className={className} {...props}>
+      <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
+      <path d="M10.5 5.5v-2a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2" />
+    </svg>
+  );
+}
+
+export function Check({ className = "size-3.5", ...props }: IconProps) {
+  return (
+    <svg {...base} className={className} {...props}>
+      <path d="m3 8.5 3.25 3.25L13 5" />
+    </svg>
+  );
+}

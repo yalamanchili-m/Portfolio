@@ -62,6 +62,13 @@ pnpm-debug.log*
 # Per-machine npm config (registry tokens, auth, local overrides).
 .npmrc
 
+# ─── Local browser & screenshot artifacts ────────────────────────────────────
+# Temp Chrome profile written by scripted browser/screenshot runs.
+.tmp-chrome*/
+# Screenshot captures taken during visual checks.
+/*-shot*.png
+/*-toast*.png
+
 # Locally installed agent skills (regenerate with `npx skills add`).
 .agents/skills/graphify/
 

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import { CopyToast } from "@/components/ui/CopyButton";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import "./globals.css";
 
@@ -73,6 +74,7 @@ export default function RootLayout({
         className={`${instrumentSerif.variable} ${jakartaSans.variable} ${jetbrainsMono.variable} min-h-full bg-canvas font-sans text-primary antialiased`}
       >
         {children}
+        <CopyToast />
         <CustomCursor />
       </body>
     </html>

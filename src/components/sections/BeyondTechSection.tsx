@@ -9,9 +9,11 @@ import type { BeyondTechCard } from "@/types/portfolio";
 
 /**
  * SECTION 05 — EXTRA-CURRICULARS & BEYOND TECH.
- * One uniform card grid: every entry shares the same dimensions. Cards
- * with full write-ups (SustainLoop, Transcendent) open an accessible detail
- * modal with pillar grids and press links; the rest read as role cards.
+ * One uniform card grid: every entry uses the same template — index and
+ * status at the top, title/subtitle/summary in the middle, and a tag row
+ * pinned to the bottom. Cards with full write-ups (SustainLoop, Transcendent)
+ * open an accessible detail modal with pillar grids and press links; the rest
+ * read as role cards.
  */
 export function BeyondTechSection() {
   const [activeCard, setActiveCard] = useState<BeyondTechCard | null>(null);
@@ -40,11 +42,11 @@ export function BeyondTechSection() {
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 {card.badge ? (
-                  <span className="order-first w-full rounded-full bg-steel-blue px-2.5 py-1 text-[9px] font-semibold tracking-[0.12em] text-on-accent uppercase shadow-tactile sm:order-none sm:w-auto sm:max-w-[72%] sm:text-right">
+                  <span className="order-first w-full rounded-full bg-steel-blue px-2.5 py-1 text-[10px] font-semibold tracking-[0.12em] text-on-accent uppercase shadow-tactile sm:order-none sm:w-auto sm:max-w-[72%] sm:text-right">
                     {card.badge}
                   </span>
                 ) : expandable ? (
-                  <span className="rounded-full border border-steel-blue/20 bg-steel-blue/10 px-2.5 py-1 text-[9px] font-semibold tracking-[0.12em] text-steel-blue uppercase">
+                  <span className="rounded-full border border-steel-blue/20 bg-steel-blue/10 px-2.5 py-1 text-[10px] font-semibold tracking-[0.12em] text-steel-blue uppercase">
                     View details
                   </span>
                 ) : (
@@ -55,29 +57,24 @@ export function BeyondTechSection() {
                 )}
               </div>
 
-              <h3 className="mt-5 font-serif text-[22px] leading-[1.1] tracking-[-0.01em] text-primary text-balance">
+              <h3 className="mt-5 font-serif text-[23px] leading-[1.1] tracking-[-0.01em] text-primary text-balance">
                 {card.title}
               </h3>
-              <p className="mt-1.5 font-mono text-[10px] font-medium tracking-[0.14em] text-steel-blue uppercase">
+              <p className="mt-1.5 font-mono text-[11px] font-medium tracking-[0.14em] text-steel-blue uppercase">
                 {card.subtitle}
               </p>
-              <p className="mt-3 text-[12.5px] leading-relaxed text-secondary">
+              <p className="mt-3 text-[13.5px] leading-relaxed text-secondary">
                 {card.summary}
               </p>
 
-              {card.footerCue ? (
-                <p className="mt-auto flex items-center gap-1.5 pt-5 font-mono text-[10px] font-medium tracking-[0.1em] text-steel-blue uppercase transition-colors group-hover:text-soft-blue">
-                  {card.footerCue}
-                  <ArrowUpRight className="size-3 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                </p>
-              ) : card.tags.length > 0 ? (
+              {card.tags.length > 0 ? (
                 <ul
                   className="mt-auto flex flex-wrap gap-1.5 pt-5"
                   aria-label={`${card.title} tags`}
                 >
                   {card.tags.map((tag) => (
                     <li key={tag}>
-                      <Tag>{tag}</Tag>
+                      <Tag className="shadow-[var(--shadow-chip)]">{tag}</Tag>
                     </li>
                   ))}
                 </ul>
@@ -194,16 +191,16 @@ function DetailModal({
         <header className="flex items-start justify-between gap-4 border-b border-slate-blue/12 bg-tint/60 px-5 py-4 sm:px-6">
           <div>
             {card.badge ? (
-              <span className="mb-2 inline-flex rounded-full bg-steel-blue px-2.5 py-1 text-[9px] font-semibold tracking-[0.12em] text-on-accent uppercase">
+              <span className="mb-2 inline-flex rounded-full bg-steel-blue px-2.5 py-1 text-[10px] font-semibold tracking-[0.12em] text-on-accent uppercase">
                 {card.badge}
               </span>
             ) : null}
-            <p className="font-mono text-[10px] font-medium tracking-[0.18em] text-steel-blue uppercase">
+            <p className="font-mono text-[11px] font-medium tracking-[0.18em] text-steel-blue uppercase">
               {card.subtitle}
             </p>
             <h3
               id="beyond-modal-title"
-              className="mt-2 font-serif text-[24px] leading-[1.1] tracking-[-0.01em] text-primary text-balance sm:text-[28px]"
+              className="mt-2 font-serif text-[25px] leading-[1.1] tracking-[-0.01em] text-primary text-balance sm:text-[29px]"
             >
               {card.title}
             </h3>
@@ -213,23 +210,23 @@ function DetailModal({
             type="button"
             onClick={onClose}
             aria-label="Close details"
-            className="btn btn-quiet shrink-0 rounded-full px-3 py-1.5 text-[11px]"
+            className="btn btn-quiet shrink-0 rounded-full px-3 py-1.5 text-[12px]"
           >
             Close
           </button>
         </header>
 
         <div className="max-h-[70vh] overflow-y-auto px-5 py-5 sm:px-6">
-          <p className="text-[13px] leading-relaxed text-secondary">
+          <p className="text-[14px] leading-relaxed text-secondary">
             {card.summary}
           </p>
 
           {card.details?.progression ? (
             <div className="mt-5 rounded-xl border border-slate-blue/15 bg-tint/60 px-4 py-3">
-              <p className="font-mono text-[9.5px] font-medium tracking-[0.16em] text-slate-blue uppercase">
+              <p className="font-mono text-[10.5px] font-medium tracking-[0.16em] text-slate-blue uppercase">
                 Progression
               </p>
-              <p className="mt-1.5 text-[12.5px] font-semibold text-primary">
+              <p className="mt-1.5 text-[13.5px] font-semibold text-primary">
                 {card.details.progression}
               </p>
             </div>
@@ -238,7 +235,7 @@ function DetailModal({
           <div className="mt-6 space-y-5">
             {card.details?.sections.map((section) => (
               <section key={section.title}>
-                <h4 className="font-mono text-[9.5px] font-medium tracking-[0.16em] text-steel-blue uppercase">
+                <h4 className="font-mono text-[10.5px] font-medium tracking-[0.16em] text-steel-blue uppercase">
                   {section.title}
                 </h4>
                 {section.points.length > 0 ? (
@@ -246,7 +243,7 @@ function DetailModal({
                     {section.points.map((point) => (
                       <li
                         key={point}
-                        className="flex items-start gap-2 text-[12.5px] leading-relaxed text-secondary"
+                        className="flex items-start gap-2 text-[13.5px] leading-relaxed text-secondary"
                       >
                         <span
                           aria-hidden="true"
@@ -267,10 +264,10 @@ function DetailModal({
                         <span className="font-serif text-lg leading-none text-powder-blue">
                           {String(index + 1).padStart(2, "0")}
                         </span>
-                        <h5 className="mt-1.5 text-[12.5px] font-semibold text-primary">
+                        <h5 className="mt-1.5 text-[13.5px] font-semibold text-primary">
                           {pillar.title}
                         </h5>
-                        <p className="mt-1 text-[12px] leading-relaxed text-secondary">
+                        <p className="mt-1 text-[13px] leading-relaxed text-secondary">
                           {pillar.description}
                         </p>
                       </li>
@@ -283,8 +280,8 @@ function DetailModal({
 
           {card.details?.media?.length ? (
             <div className="mt-6 border-t border-slate-blue/12 pt-5">
-              <p className="font-mono text-[9.5px] font-medium tracking-[0.16em] text-steel-blue uppercase">
-                Media &amp; press
+              <p className="font-mono text-[10.5px] font-medium tracking-[0.16em] text-steel-blue uppercase">
+                {card.details.mediaLabel ?? "Media & press"}
               </p>
               <ul className="mt-3 flex flex-wrap gap-2">
                 {card.details.media.map((link) => (
@@ -293,7 +290,7 @@ function DetailModal({
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn btn-quiet inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[11.5px] font-medium"
+                      className="btn btn-quiet inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[12.5px] font-medium"
                     >
                       {link.label}
                       <ArrowUpRight className="size-3" />

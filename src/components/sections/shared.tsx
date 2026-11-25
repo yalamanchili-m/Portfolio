@@ -1,8 +1,16 @@
 "use client";
 
-export function Tag({ children }: { children: React.ReactNode }) {
+export function Tag({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <span className="inline-flex items-center rounded-full border border-slate-blue/15 bg-tint px-3 py-1.5 text-[11px] font-medium text-slate-blue">
+    <span
+      className={`inline-flex items-center rounded-full border border-slate-blue/15 bg-tint px-3 py-1.5 text-[12px] font-medium text-slate-blue ${className}`}
+    >
       {children}
     </span>
   );
@@ -27,7 +35,7 @@ export function StatusPill({
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-[0.08em] uppercase ${tones[tone]}`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-[0.08em] uppercase ${tones[tone]}`}
     >
       {label}
     </span>
@@ -62,7 +70,7 @@ export function SectionShell({
       <header className="mb-10 space-y-4 sm:mb-12">
         <div className="flex items-center gap-3">
           <span className="h-px w-8 bg-steel-blue/50" aria-hidden="true" />
-          <p className="font-mono text-[11px] font-medium tracking-[0.2em] text-steel-blue uppercase">
+          <p className="font-mono text-[12px] font-medium tracking-[0.2em] text-steel-blue uppercase">
             {eyebrow}
           </p>
         </div>
@@ -70,7 +78,7 @@ export function SectionShell({
           {title}
         </h2>
         {intro ? (
-          <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-secondary sm:text-base">
+          <p className="max-w-2xl text-pretty text-[16px] leading-relaxed text-secondary sm:text-base">
             {intro}
           </p>
         ) : null}

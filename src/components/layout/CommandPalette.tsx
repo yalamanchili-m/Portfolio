@@ -1,6 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
+import { createPortal } from "react-dom";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { CERTIFICATIONS } from "@/data/certifications";
 import { EXPERIENCE } from "@/data/experience";
@@ -40,7 +48,7 @@ function buildItems(): PaletteItem[] {
     {
       id: "section-education",
       label: "Education",
-      hint: "CBIT · B.E. CSE (R22)",
+      hint: "CBIT · B.E. CSE",
       group: "Sections",
       href: "#education",
     },
@@ -96,24 +104,50 @@ function buildItems(): PaletteItem[] {
   ];
 }
 
+const subscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 export function CommandPalette({
   open,
   onClose,
+  linkPrefix = "",
 }: {
   open: boolean;
   onClose: () => void;
+  /** Prefix for section anchors when the palette is used off the home page. */
+  linkPrefix?: string;
 }) {
-  return (
+  const mounted = useSyncExternalStore(
+    subscribe,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
+
+  // Portal to <body>: the palette is mounted inside the navbar, whose
+  // backdrop-filter makes it the containing block for fixed descendants and
+  // so clipped the overlay to the header strip instead of the whole viewport.
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
-      {open ? <PaletteDialog onClose={onClose} /> : null}
-    </AnimatePresence>
+      {open ? <PaletteDialog onClose={onClose} linkPrefix={linkPrefix} /> : null}
+    </AnimatePresence>,
+    document.body,
   );
 }
 
-function PaletteDialog({ onClose }: { onClose: () => void }) {
+function PaletteDialog({
+  onClose,
+  linkPrefix,
+}: {
+  onClose: () => void;
+  linkPrefix: string;
+}) {
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const items = useMemo(() => buildItems(), []);
 
@@ -143,6 +177,12 @@ function PaletteDialog({ onClose }: { onClose: () => void }) {
 
   const jump = (item: PaletteItem) => {
     onClose();
+    // Off the home page there is nothing to scroll to: hand the anchor back
+    // to the browser so it lands on the right section of the portfolio.
+    if (linkPrefix) {
+      router.push(`${linkPrefix}${item.href}`);
+      return;
+    }
     window.requestAnimationFrame(() => {
       document.querySelector(item.href)?.scrollIntoView({
         behavior: "smooth",
@@ -217,7 +257,7 @@ function PaletteDialog({ onClose }: { onClose: () => void }) {
             <div className="flex items-center gap-3 border-b border-slate-blue/12 px-4 py-3">
               <span
                 aria-hidden="true"
-                className="font-mono text-[11px] text-steel-blue"
+                className="font-mono text-[12px] text-steel-blue"
               >
                 /
               </span>
@@ -236,12 +276,12 @@ function PaletteDialog({ onClose }: { onClose: () => void }) {
                   activeItem ? `palette-option-${activeItem.id}` : undefined
                 }
                 placeholder="Jump to a project, role, skill or certification…"
-                className="w-full bg-transparent text-[14px] text-primary placeholder:text-secondary/60 focus:outline-none"
+                className="w-full bg-transparent text-[15px] text-primary placeholder:text-secondary/60 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={onClose}
-                className="shrink-0 rounded-md border border-slate-blue/20 px-2 py-1 font-mono text-[9.5px] tracking-[0.1em] text-secondary uppercase transition-colors hover:border-steel-blue/40 hover:text-steel-blue"
+                className="shrink-0 rounded-md border border-slate-blue/20 px-2 py-1 font-mono text-[10.5px] tracking-[0.1em] text-secondary uppercase transition-colors hover:border-steel-blue/40 hover:text-steel-blue"
               >
                 Esc
               </button>
@@ -254,7 +294,7 @@ function PaletteDialog({ onClose }: { onClose: () => void }) {
               className="max-h-[min(56vh,420px)] overflow-y-auto px-2 py-2"
             >
               {results.length === 0 ? (
-                <li className="px-3 py-8 text-center text-[12.5px] text-secondary">
+                <li className="px-3 py-8 text-center text-[13.5px] text-secondary">
                   No matches for “{query}”.
                 </li>
               ) : null}
@@ -266,7 +306,7 @@ function PaletteDialog({ onClose }: { onClose: () => void }) {
                 return (
                   <li key={item.id} role="presentation">
                     {startsGroup ? (
-                      <p className="px-3 pt-3 pb-1 font-mono text-[9px] font-medium tracking-[0.18em] text-slate-blue/80 uppercase">
+                      <p className="px-3 pt-3 pb-1 font-mono text-[10px] font-medium tracking-[0.18em] text-slate-blue/80 uppercase">
                         {item.group}
                       </p>
                     ) : null}
@@ -282,16 +322,16 @@ function PaletteDialog({ onClose }: { onClose: () => void }) {
                       }`}
                     >
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate text-[13px] font-medium text-primary">
+                        <span className="block truncate text-[14px] font-medium text-primary">
                           {item.label}
                         </span>
-                        <span className="block truncate text-[11px] text-secondary/85">
+                        <span className="block truncate text-[12px] text-secondary/85">
                           {item.hint}
                         </span>
                       </span>
                       <span
                         aria-hidden="true"
-                        className={`font-mono text-[10px] ${
+                        className={`font-mono text-[11px] ${
                           isActive ? "text-steel-blue" : "text-transparent"
                         }`}
                       >
@@ -303,7 +343,7 @@ function PaletteDialog({ onClose }: { onClose: () => void }) {
               })}
             </ul>
 
-            <div className="flex items-center justify-between border-t border-slate-blue/12 bg-tint/50 px-4 py-2 font-mono text-[9.5px] tracking-[0.08em] text-secondary/80 uppercase">
+            <div className="flex items-center justify-between border-t border-slate-blue/12 bg-tint/50 px-4 py-2 font-mono text-[10.5px] tracking-[0.08em] text-secondary/80 uppercase">
               <span>↑↓ navigate · ↵ jump · esc close</span>
               <span>{results.length} results</span>
             </div>

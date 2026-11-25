@@ -17,8 +17,7 @@ export const BEYOND_TECH: BeyondTech = {
         "Singapore International Foundation (SIF) · Cross-Border Innovation",
       summary:
         "Selected as 1 of 3 winning teams globally (300+ participants across 27 countries) for building an AI-powered circular economy platform that helps SMEs and manufacturers turn surplus materials and idle equipment into revenue.",
-      tags: [],
-      footerCue: "Click to view full impact & press",
+      tags: ["Climate tech", "Product strategy", "Pitch"],
       details: {
         progression: "Top 3 winning teams · 10 shortlisted finalists",
         sections: [
@@ -89,39 +88,60 @@ export const BEYOND_TECH: BeyondTech = {
       title: "Editor-in-Chief, Transcendent",
       subtitle: "College Publication & Editorial Leadership",
       summary:
-        "Progressed from Sub Editor to Deputy Editor-in-Chief and Editor-in-Chief, leading a 30-member team to publish 6 newsletters, oversee Substack articles, and organize 3 major campus events engaging 1,000+ students.",
+        "I joined Transcendent as a Sub Editor and, over time, grew into the role of Editor-in-Chief. Along the way I led a 30-member team, published 6 newsletters, edited articles for a Substack publication, and organized 3 major campus events that drew 1,000+ students. I learned that a publication runs on trust, clear standards, and people who feel their voice matters.",
       tags: ["Editorial", "Team leadership", "Events"],
       details: {
-        progression: "Sub Editor → Deputy Editor-in-Chief → Editor-in-Chief",
         sections: [
           {
-            title: "Editorial Leadership & Content Development",
+            title: "Editorial Leadership & Content",
             points: [
-              "Led the publication of 6 newsletters — planning, writing, editing, and design.",
-              "Authored and edited 2 articles on Paramount Press's Substack covering democracy, dissent, civic responsibility, music, and culture.",
-              "Managed editorial workflows and publication standards.",
+              "I led all 6 newsletters from the first plan to the final design — writing, editing, and shaping them to a consistent standard.",
+              "I also authored and edited 2 articles for Paramount Press's Substack, on democracy, dissent, civic responsibility, music, and culture, because I believe students should think about the world around them, not just report on it.",
             ],
           },
           {
-            title: "Team Management & Recruitment",
+            title: "Building and Leading the Team",
             points: [
-              "Managed a 30-member team.",
-              "Conducted interviews, selected and onboarded new members, and coordinated cross-functional groups.",
+              "I managed a 30-member team.",
+              "I interviewed candidates, chose and onboarded new members, and coordinated groups across functions so writers, editors, and designers worked as one team.",
             ],
           },
           {
             title: "Events & Campus Engagement",
             points: [
-              "Organized 3 major events annually drawing 1,000+ student participants.",
-              "Included inter-club collaborations during the annual college fest.",
+              "Each year I organized 3 major events that brought in 1,000+ student participants.",
+              "That included collaborating with other clubs during the annual college fest, where good planning only counts if people show up and enjoy it.",
             ],
           },
           {
-            title: "Budgeting & Vendor Coordination",
+            title: "Budgets & Vendors",
             points: [
-              "Managed event budgets with college authorities.",
-              "Handled external vendor liaison and procurement for club merchandise.",
+              "I handled event budgets with college authorities and managed external vendors and procurement for club merchandise.",
+              "This taught me to plan around constraints and communicate clearly with people outside the team.",
             ],
+          },
+          {
+            title: "Proof of Work",
+            points: [
+              "Paramount Press Substack: “Democracy, Debate, Dissent and Duty”.",
+              "Transcendent newsletter, 2026 edition — full published issue.",
+              "Transcendent newsletter, 2025 edition — full published issue.",
+            ],
+          },
+        ],
+        mediaLabel: "Proof of work",
+        media: [
+          {
+            label: "Paramount Press essay",
+            href: "https://paramountpress.substack.com/p/democracy-debate-dissent-and-duty",
+          },
+          {
+            label: "Newsletter 2026",
+            href: "https://drive.google.com/file/d/1kkBy9kPA4JA6hLf4E1JOqYabZxpCw1ax/view",
+          },
+          {
+            label: "Newsletter 2025",
+            href: "https://drive.google.com/file/d/1B3wy7hk2fp69IV-LjPlkGxA3LfUuB5UO/view",
           },
         ],
       },

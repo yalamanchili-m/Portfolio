@@ -289,6 +289,7 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
   const pausedRef = useRef(false);
   const countdownRef = useRef<number | null>(null);
   const soundOnRef = useRef(false);
+  const soundPromptedRef = useRef(false);
   const visibleRef = useRef(false);
   const audioRef = useRef<AudioContext | null>(null);
   const planRef = useRef<AgentPlan | null>(null);
@@ -348,6 +349,22 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
     }, 0);
 
     return () => window.clearTimeout(timer);
+  }, []);
+
+  /**
+   * Browsers only allow audio after a gesture, so the first interaction with
+   * the cabinet arms sound instead of making the visitor hunt for the toggle.
+   */
+  const enableSoundOnFirstInteraction = useCallback(() => {
+    if (soundPromptedRef.current || soundOnRef.current) return;
+    soundPromptedRef.current = true;
+    try {
+      const ctx = (audioRef.current ??= new AudioContext());
+      if (ctx.state === "suspended") void ctx.resume();
+    } catch {
+      /* audio is a nicety; a blocked context must never break the game */
+    }
+    setSoundOn(true);
   }, []);
 
   const cue = useCallback((kind: SoundKind) => {
@@ -919,6 +936,13 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
     };
   }, [cue, resetPlan]);
 
+  const handlePanelPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLElement | null;
+    // The sound toggle owns its own click; don't fight it with auto-enable.
+    if (target?.closest('button[aria-label="Muted"], button[aria-label="Sound On"]')) return;
+    enableSoundOnFirstInteraction();
+  };
+
   const handlePointerTakeover = () => {
     if (mode !== "human") controlsRef.current.startHuman();
   };
@@ -930,6 +954,7 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
   return (
     <div
       ref={wrapRef}
+      onPointerDown={handlePanelPointerDown}
       aria-label="Tetris cabinet. Press any game key or the pad to take over from the AI demo."
       className={`relative mx-auto w-full max-w-[780px] rounded-3xl border border-slate-blue/20 bg-surface p-3 shadow-tactile sm:p-4 ${className}`}
     >
@@ -938,10 +963,10 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
       {/* ------------------------------------------------------------ */}
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-blue/15 pb-3">
         <div className="flex min-w-0 items-center gap-2">
-          <span className="rounded-md bg-steel-blue px-2 py-1 font-mono text-[11px] leading-none font-bold tracking-[0.28em] text-on-accent">
+          <span className="rounded-md bg-steel-blue px-2 py-1 font-mono text-[12px] leading-none font-bold tracking-[0.28em] text-on-accent">
             TETRIS
           </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-blue/25 bg-tint px-2.5 py-1 font-mono text-[9.5px] font-semibold tracking-[0.1em] text-secondary uppercase">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-blue/25 bg-tint px-2.5 py-1 font-mono text-[10.5px] font-semibold tracking-[0.1em] text-secondary uppercase">
             <span
               aria-hidden="true"
               className={`size-1.5 rounded-full ${
@@ -987,7 +1012,7 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
                 {telemetry.hold ? (
                   <PiecePreview type={telemetry.hold} cell={11} dim={telemetry.holdUsed} />
                 ) : (
-                  <span className="font-mono text-[9px] tracking-[0.14em] text-slate-blue/60 uppercase">
+                  <span className="font-mono text-[10px] tracking-[0.14em] text-slate-blue/60 uppercase">
                     empty
                   </span>
                 )}
@@ -1035,14 +1060,14 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
                   className="score-float absolute top-[26%] left-1/2 flex flex-col items-center gap-0.5 text-center font-mono"
                 >
                   <span
-                    className={`text-[13px] font-bold tracking-[0.06em] ${
+                    className={`text-[14px] font-bold tracking-[0.06em] ${
                       callout.tone === "tetris" ? "text-online" : "text-steel-blue"
                     } drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]`}
                   >
                     {callout.primary}
                   </span>
                   {callout.secondary ? (
-                    <span className="text-[8.5px] font-semibold tracking-[0.16em] text-secondary uppercase">
+                    <span className="text-[9.5px] font-semibold tracking-[0.16em] text-secondary uppercase">
                       {callout.secondary}
                     </span>
                   ) : null}
@@ -1055,7 +1080,7 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
               <div className="pointer-events-none absolute inset-0 grid place-items-center rounded-2xl bg-[var(--tetris-overlay)] backdrop-blur-[1px]">
                 <p
                   key={countdown}
-                  className="font-serif text-[64px] leading-none text-primary"
+                  className="font-serif text-[65px] leading-none text-primary"
                   aria-live="assertive"
                 >
                   {countdown === 0 ? "GO!" : countdown}
@@ -1067,10 +1092,10 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
             {paused && mode === "human" && !result && countdown === null ? (
               <div className="absolute inset-0 grid place-items-center rounded-2xl bg-[var(--tetris-overlay)] backdrop-blur-[1px]">
                 <div className="text-center">
-                  <p className="font-mono text-[10px] tracking-[0.2em] text-slate-blue uppercase">
+                  <p className="font-mono text-[11px] tracking-[0.2em] text-slate-blue uppercase">
                     paused
                   </p>
-                  <p className="mt-1 text-[11px] text-secondary">press P or ▶ to resume</p>
+                  <p className="mt-1 text-[12px] text-secondary">press P or ▶ to resume</p>
                 </div>
               </div>
             ) : null}
@@ -1080,25 +1105,25 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
               <button
                 type="button"
                 onClick={() => controlsRef.current.startHuman()}
-                className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-steel-blue/50 bg-surface/95 px-3.5 py-2 font-mono text-[9.5px] font-semibold tracking-[0.12em] whitespace-nowrap text-primary uppercase shadow-tactile backdrop-blur transition-colors duration-200 hover:border-steel-blue hover:text-steel-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-steel-blue"
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-steel-blue/50 bg-surface/95 px-3.5 py-2 font-mono text-[10.5px] font-semibold tracking-[0.12em] whitespace-nowrap text-primary uppercase shadow-tactile backdrop-blur transition-colors duration-200 hover:border-steel-blue hover:text-steel-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-steel-blue"
               >
-                Press <kbd className="mx-1 rounded border border-slate-blue/30 bg-tint px-1 py-0.5 text-[9px]">space</kbd> or click to play
+                Press <kbd className="mx-1 rounded border border-slate-blue/30 bg-tint px-1 py-0.5 text-[10px]">space</kbd> or click to play
               </button>
             ) : null}
 
             {/* Game over */}
             {result ? (
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 rounded-2xl bg-[var(--tetris-overlay)] px-3 text-center backdrop-blur-[2px]">
-                <p className="font-mono text-[9px] tracking-[0.2em] text-slate-blue uppercase">
+                <p className="font-mono text-[10px] tracking-[0.2em] text-slate-blue uppercase">
                   {result.lines} lines · level {telemetry.level}
                 </p>
-                <p className="font-serif text-[34px] leading-none text-primary tabular-nums">
+                <p className="font-serif text-[35px] leading-none text-primary tabular-nums">
                   {result.score}
                 </p>
-                <p className="font-mono text-[8.5px] tracking-[0.16em] text-secondary uppercase">
+                <p className="font-mono text-[9.5px] tracking-[0.16em] text-secondary uppercase">
                   ai best {benchmark}
                 </p>
-                <p className="text-[10px] leading-snug text-secondary">
+                <p className="text-[11px] leading-snug text-secondary">
                   {result.score >= benchmark && benchmark > 0
                     ? "You out-stacked the agent."
                     : "The heuristic agent wins this round."}
@@ -1107,14 +1132,14 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
                   <button
                     type="button"
                     onClick={() => controlsRef.current.startHuman()}
-                    className="flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-steel-blue bg-steel-blue px-3 text-[11px] font-semibold text-on-accent shadow-tactile transition-transform duration-150 hover:bg-steel-blue/90 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-steel-blue"
+                    className="flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-steel-blue bg-steel-blue px-3 text-[12px] font-semibold text-on-accent shadow-tactile transition-transform duration-150 hover:bg-steel-blue/90 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-steel-blue"
                   >
                     <span aria-hidden="true">↻</span> Play Again
                   </button>
                   <button
                     type="button"
                     onClick={() => controlsRef.current.startAgent()}
-                    className="flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-slate-blue/30 bg-surface px-3 text-[11px] font-semibold text-secondary shadow-tactile transition-transform duration-150 hover:border-steel-blue/50 hover:text-steel-blue active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-steel-blue"
+                    className="flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-slate-blue/30 bg-surface px-3 text-[12px] font-semibold text-secondary shadow-tactile transition-transform duration-150 hover:border-steel-blue/50 hover:text-steel-blue active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-steel-blue"
                   >
                     Let AI Demo
                   </button>
@@ -1138,7 +1163,7 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
                     {type ? (
                       <PiecePreview type={type} cell={slot === 0 ? 12 : 10} dim={slot > 0} />
                     ) : (
-                      <span className="font-mono text-[9px] text-slate-blue/40">·</span>
+                      <span className="font-mono text-[10px] text-slate-blue/40">·</span>
                     )}
                   </div>
                 );
@@ -1175,14 +1200,14 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
           onClick={() => setMathOpen((open) => !open)}
           aria-expanded={mathOpen}
           aria-controls="ai-telemetry"
-          className="inline-flex items-center gap-2 rounded-full border border-slate-blue/25 bg-tint px-3 py-1.5 font-mono text-[9.5px] font-semibold tracking-[0.12em] text-secondary uppercase transition-colors duration-150 hover:border-steel-blue/50 hover:text-steel-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-steel-blue"
+          className="inline-flex items-center gap-2 rounded-full border border-slate-blue/25 bg-tint px-3 py-1.5 font-mono text-[10.5px] font-semibold tracking-[0.12em] text-secondary uppercase transition-colors duration-150 hover:border-steel-blue/50 hover:text-steel-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-steel-blue"
         >
           <span
             aria-hidden="true"
             className={`size-1.5 rounded-full ${mode === "agent" ? "bg-online soft-pulse" : "bg-steel-blue"}`}
           />
           AI Telemetry
-          <span aria-hidden="true" className={`text-[8px] transition-transform ${mathOpen ? "rotate-180" : ""}`}>
+          <span aria-hidden="true" className={`text-[9px] transition-transform ${mathOpen ? "rotate-180" : ""}`}>
             ▾
           </span>
         </button>
@@ -1194,20 +1219,20 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
           >
             <dl className="grid grid-cols-3 gap-2 text-center">
               <div>
-                <dt className="text-[8px] tracking-[0.12em] text-slate-blue uppercase">eval</dt>
-                <dd className="mt-0.5 text-[13px] text-primary tabular-nums">
+                <dt className="text-[9px] tracking-[0.12em] text-slate-blue uppercase">eval</dt>
+                <dd className="mt-0.5 text-[14px] text-primary tabular-nums">
                   {breakdown ? breakdown.total.toFixed(2) : "—"}
                 </dd>
               </div>
               <div>
-                <dt className="text-[8px] tracking-[0.12em] text-slate-blue uppercase">states</dt>
-                <dd className="mt-0.5 text-[13px] text-primary tabular-nums">
+                <dt className="text-[9px] tracking-[0.12em] text-slate-blue uppercase">states</dt>
+                <dd className="mt-0.5 text-[14px] text-primary tabular-nums">
                   {mode === "agent" && live ? telemetry.evaluated : "—"}
                 </dd>
               </div>
               <div>
-                <dt className="text-[8px] tracking-[0.12em] text-slate-blue uppercase">ms</dt>
-                <dd className="mt-0.5 text-[13px] text-primary tabular-nums">
+                <dt className="text-[9px] tracking-[0.12em] text-slate-blue uppercase">ms</dt>
+                <dd className="mt-0.5 text-[14px] text-primary tabular-nums">
                   {mode === "agent" && live ? telemetry.elapsedMs.toFixed(1) : "—"}
                 </dd>
               </div>
@@ -1220,7 +1245,7 @@ export function AgenticTetris({ className = "" }: { className?: string }) {
               <WeightRow label="bumpiness" value={breakdown?.bumpiness} weight={-0.18} />
             </dl>
 
-            <p className="mt-2.5 text-[9px] leading-relaxed text-secondary">
+            <p className="mt-2.5 text-[10px] leading-relaxed text-secondary">
               total = 0.76·lines − 0.51·height − 0.36·holes − 0.18·bumpiness
             </p>
           </div>
@@ -1247,7 +1272,7 @@ function Chamber({
 }) {
   return (
     <div className="flex w-full min-w-0 flex-col rounded-xl border border-slate-blue/25 bg-tint p-1.5">
-      <p className="mb-1 px-1 font-mono text-[8.5px] font-semibold tracking-[0.2em] text-slate-blue uppercase">
+      <p className="mb-1 px-1 font-mono text-[9.5px] font-semibold tracking-[0.2em] text-slate-blue uppercase">
         {label}
       </p>
       <div className="rounded-lg bg-surface/70 p-1 shadow-[inset_0_1px_3px_rgba(21,34,54,0.12)]">
@@ -1260,10 +1285,10 @@ function Chamber({
 function Metric({ label, value, big = false }: { label: string; value: number; big?: boolean }) {
   return (
     <div className="flex min-w-0 flex-col justify-center rounded-xl border border-slate-blue/25 bg-tint px-2 py-1.5 lg:px-2.5 lg:py-2">
-      <p className="font-mono text-[8px] tracking-[0.18em] text-slate-blue uppercase">{label}</p>
+      <p className="font-mono text-[9px] tracking-[0.18em] text-slate-blue uppercase">{label}</p>
       <p
         className={`mt-0.5 font-mono leading-none font-bold text-primary tabular-nums ${
-          big ? "text-[19px] lg:text-[22px]" : "text-[15px] lg:text-[17px]"
+          big ? "text-[20px] lg:text-[23px]" : "text-[16px] lg:text-[18px]"
         }`}
       >
         {value}
@@ -1294,20 +1319,20 @@ function CabinetButton({
       disabled={disabled}
       aria-pressed={active}
       aria-label={keycap ? `${label} (${keycap})` : label}
-      className={`inline-flex min-h-8 items-center gap-1.5 rounded-lg border px-2 py-1 font-mono text-[9.5px] font-semibold tracking-[0.08em] uppercase transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-steel-blue disabled:cursor-not-allowed disabled:opacity-45 ${
+      className={`inline-flex min-h-8 items-center gap-1.5 rounded-lg border px-2 py-1 font-mono text-[10.5px] font-semibold tracking-[0.08em] uppercase transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-steel-blue disabled:cursor-not-allowed disabled:opacity-45 ${
         active
           ? "border-steel-blue bg-steel-blue text-on-accent"
           : "border-slate-blue/25 bg-tint text-secondary hover:border-steel-blue/50 hover:text-steel-blue"
       }`}
     >
-      <span aria-hidden="true" className="text-[10px] leading-none">
+      <span aria-hidden="true" className="text-[11px] leading-none">
         {glyph}
       </span>
       {label}
       {keycap ? (
         <span
           aria-hidden="true"
-          className={`rounded border px-1 py-px text-[7.5px] ${
+          className={`rounded border px-1 py-px text-[8.5px] ${
             active ? "border-on-accent/35 text-on-accent/80" : "border-slate-blue/25 text-slate-blue"
           }`}
         >
@@ -1321,10 +1346,10 @@ function CabinetButton({
 function LegendKey({ keys, action }: { keys: string; action: string }) {
   return (
     <div className="flex items-center justify-between gap-1.5">
-      <span className="rounded border border-slate-blue/25 bg-surface px-1 py-0.5 font-mono text-[8px] tracking-[0.04em] text-secondary">
+      <span className="rounded border border-slate-blue/25 bg-surface px-1 py-0.5 font-mono text-[9px] tracking-[0.04em] text-secondary">
         {keys}
       </span>
-      <span className="truncate text-[9px] text-secondary/80">{action}</span>
+      <span className="truncate text-[10px] text-secondary/80">{action}</span>
     </div>
   );
 }
@@ -1347,21 +1372,21 @@ function PadKey({
       type="button"
       onClick={onClick}
       aria-label={`${label} (${keycap})`}
-      className={`relative flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl border px-1 py-1.5 transition-[background-color,border-color,color,transform] duration-150 active:scale-[0.96] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-steel-blue ${
+      className={`relative flex min-h-[3.5rem] flex-col items-center justify-center gap-1 rounded-xl border px-1 py-2 transition-[background-color,border-color,color,transform,box-shadow] duration-150 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-steel-blue sm:min-h-[3.75rem] ${
         accent
-          ? "border-steel-blue bg-steel-blue text-on-accent shadow-tactile hover:bg-steel-blue/90"
-          : "border-slate-blue/25 bg-surface text-primary shadow-tactile hover:border-steel-blue/55 hover:text-steel-blue"
+          ? "border-steel-blue bg-steel-blue text-on-accent shadow-[var(--shadow-key)] hover:bg-steel-blue/90"
+          : "border-slate-blue/25 bg-surface text-primary shadow-[var(--shadow-key)] hover:border-steel-blue/55 hover:text-steel-blue"
       }`}
     >
-      <span aria-hidden="true" className="text-[14px] leading-none">
+      <span aria-hidden="true" className="text-[17px] leading-none sm:text-[18px]">
         {glyph}
       </span>
-      <span className="font-mono text-[8.5px] font-semibold tracking-[0.08em] uppercase">
+      <span className="font-mono text-[10px] font-semibold tracking-[0.08em] uppercase">
         {label}
       </span>
       <span
         aria-hidden="true"
-        className={`absolute top-1 right-1 rounded border px-1 font-mono text-[7px] ${
+        className={`absolute top-1 right-1 rounded border px-1 font-mono text-[8px] ${
           accent ? "border-on-accent/35 text-on-accent/80" : "border-slate-blue/25 text-slate-blue"
         }`}
       >
@@ -1385,10 +1410,10 @@ function WeightRow({
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-baseline justify-between gap-2">
-        <dt className="truncate text-[10px] text-secondary">{label}</dt>
+        <dt className="truncate text-[11px] text-secondary">{label}</dt>
         <dd className="flex shrink-0 items-baseline gap-2">
-          <span className="text-[11px] text-primary tabular-nums">{value ?? "—"}</span>
-          <span className="w-8 text-right text-[9px] text-slate-blue tabular-nums">
+          <span className="text-[12px] text-primary tabular-nums">{value ?? "—"}</span>
+          <span className="w-8 text-right text-[10px] text-slate-blue tabular-nums">
             {weight > 0 ? "+" : "−"}
             {Math.abs(weight).toFixed(2)}
           </span>

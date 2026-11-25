@@ -26,17 +26,17 @@ export function CertificationsSection() {
                 <span className="font-serif text-2xl leading-none text-powder-blue">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <span className="rounded-full border border-steel-blue/20 bg-steel-blue/10 px-2.5 py-1 text-[9.5px] font-semibold tracking-[0.1em] text-steel-blue uppercase">
+                <span className="rounded-full border border-steel-blue/20 bg-steel-blue/10 px-2.5 py-1 text-[10.5px] font-semibold tracking-[0.1em] text-steel-blue uppercase">
                   {certification.issuer}
                 </span>
               </div>
 
-              <h3 className="mt-4 font-serif text-[21px] leading-[1.16] tracking-[-0.01em] text-primary text-balance">
+              <h3 className="mt-4 font-serif text-[22px] leading-[1.16] tracking-[-0.01em] text-primary text-balance">
                 {certification.name}
               </h3>
 
               {certification.note ? (
-                <p className="mt-1.5 font-mono text-[10px] tracking-[0.12em] text-secondary/80 uppercase">
+                <p className="mt-1.5 font-mono text-[11px] tracking-[0.12em] text-secondary/80 uppercase">
                   {certification.note}
                 </p>
               ) : null}
@@ -48,7 +48,7 @@ export function CertificationsSection() {
                 >
                   {certification.skills.map((skill) => (
                     <li key={skill}>
-                      <Tag>{skill}</Tag>
+                      <Tag className="shadow-[var(--shadow-chip)]">{skill}</Tag>
                     </li>
                   ))}
                 </ul>

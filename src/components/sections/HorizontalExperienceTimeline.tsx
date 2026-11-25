@@ -48,14 +48,14 @@ export function HorizontalExperienceTimeline() {
       <header className="mb-10 space-y-4">
         <div className="flex items-center gap-3">
           <span className="h-px w-8 bg-steel-blue/50" aria-hidden="true" />
-          <p className="font-mono text-[11px] font-medium tracking-[0.2em] text-steel-blue uppercase">
+          <p className="font-mono text-[12px] font-medium tracking-[0.2em] text-steel-blue uppercase">
             03 / Experience
           </p>
         </div>
         <h2 className="max-w-2xl font-serif text-4xl leading-[1.03] tracking-[-0.015em] text-primary text-balance sm:text-5xl">
           Work History
         </h2>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-secondary sm:text-base">
+        <p className="max-w-2xl text-pretty text-[16px] leading-relaxed text-secondary sm:text-base">
           Newest first along the timeline. Click any card to expand every role
           together and read the full history; click again to collapse it.
         </p>
@@ -101,7 +101,7 @@ function TimelineNode({
 }) {
   return (
     <li className="flex flex-col items-center">
-      <p className="flex h-4 items-end font-mono text-[10px] tracking-[0.14em] text-secondary">
+      <p className="flex h-4 items-end font-mono text-[11px] tracking-[0.14em] text-secondary">
         {entry.shortPeriod}
       </p>
       <span className="mt-2 flex flex-col items-center">
@@ -184,7 +184,7 @@ function ExperienceCard({
               <StatusPill label={entry.period} tone={expanded ? "burgundy" : "navy"} />
               <span
                 aria-hidden="true"
-                className={`flex size-6 shrink-0 items-center justify-center rounded-full border text-[13px] leading-none transition-colors duration-200 ${
+                className={`flex size-6 shrink-0 items-center justify-center rounded-full border text-[14px] leading-none transition-colors duration-200 ${
                   expanded
                     ? "border-steel-blue bg-steel-blue text-on-accent"
                     : "border-slate-blue/20 bg-tint text-slate-blue"
@@ -195,21 +195,21 @@ function ExperienceCard({
             </div>
 
             <div className="space-y-1.5">
-              <h3 className="font-serif text-[21px] leading-[1.08] tracking-[-0.01em] text-primary">
+              <h3 className="font-serif text-[22px] leading-[1.08] tracking-[-0.01em] text-primary">
                 {entry.organization}
               </h3>
-              <p className="text-[12.5px] font-semibold text-steel-blue">
+              <p className="text-[13.5px] font-semibold text-steel-blue">
                 {entry.role}
               </p>
               {entry.location ? (
-                <p className="text-[11px] font-medium text-secondary/80">
+                <p className="text-[12px] font-medium text-secondary/80">
                   {entry.location}
                 </p>
               ) : null}
             </div>
 
             <span
-              className={`mt-1 inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.14em] uppercase transition-colors duration-200 ${
+              className={`mt-1 inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-[0.14em] uppercase transition-colors duration-200 ${
                 expanded ? "text-steel-blue" : "text-secondary"
               }`}
             >
@@ -230,12 +230,12 @@ function ExperienceCard({
                 className="overflow-hidden border-t border-slate-blue/12"
               >
                 <div className="space-y-4 px-6 pt-4 pb-6">
-                  <p className="text-[12.5px] leading-relaxed text-secondary">
+                  <p className="text-[13.5px] leading-relaxed text-secondary">
                     {entry.summary}
                   </p>
 
                   <div>
-                    <p className="font-mono text-[9.5px] font-medium tracking-[0.16em] text-slate-blue uppercase">
+                    <p className="font-mono text-[10.5px] font-medium tracking-[0.16em] text-slate-blue uppercase">
                       Responsibilities &amp; impact
                     </p>
                     <ul className="mt-2 space-y-2.5">
@@ -245,7 +245,7 @@ function ExperienceCard({
                         return (
                           <li
                             key={highlight}
-                            className="flex items-start gap-2 text-[12px] leading-relaxed text-secondary"
+                            className="flex items-start gap-2 text-[13px] leading-relaxed text-secondary"
                           >
                             <span
                               aria-hidden="true"
